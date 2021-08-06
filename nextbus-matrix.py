@@ -148,8 +148,8 @@ if tileWidth >= width: tilesAcross = 2
 else:                  tilesAcross = int(math.ceil(width / tileWidth)) + 1
 
 nextPrediction = 0  # Index of predictList item to attach to tile
-for x in xrange(tilesAcross):
-	for y in xrange(0, 2):
+for x in range(tilesAcross):
+	for y in range(0, 2):
 		tileList.append(tile(x * tileWidth + y * tileWidth / 2, 
 		  y * 17, predictList[nextPrediction]))
 		nextPrediction += 1
