@@ -2,6 +2,7 @@ from rgbmatrix import RGBMatrix, RGBMatrixOptions
 from dateutil import parser
 from PIL import Image, ImageDraw, ImageFont
 import os
+import math
 
 class MatrixDisplay:
     def __init__(self, height, width):
@@ -35,20 +36,23 @@ class MatrixDisplay:
         w, h = self.draw.textsize(route_string, font= self.font)
         h += int(h*0.15)
         w += int(w*0.09)
-        self.draw.rounded_rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill=fill_color, radius=5)
+        self.draw.rounded_rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill=fill_color, radius=3)
         self.draw.text((((width-w)/2) + anchor_x, ((height-h)/2) + anchor_y), route_string, fill=text_color, font= self.font)
 
     def draw_text(self, anchor_x, anchor_y, text):
         self.draw.text((anchor_x, anchor_y), text, fill="#4d4d4d", font= self.font)
 
     def draw_arrival(self, anchor_x, anchor_y, text):
-        splits = text.split('&')
-        self.draw_text(anchor_x, anchor_y, splits[0])
-        self.draw_text(anchor_x - 2, anchor_y + 7, splits[1])
+        splits = text.split()
+        splitAt = math.floor(len(splits)/2)
+        topText = splits[0:splitAt]
+        bottomText = splits[splitAt:len(splits)]
+        self.draw_text(anchor_x, anchor_y, ' '.join(topText))
+        self.draw_text(anchor_x + 1, anchor_y + 7, ' '.join(bottomText))
 
     def draw_estimate(self, anchor_x, anchor_y, date_time_string):
         date_time = parser.parse(date_time_string)
-        self.draw_text(anchor_x, anchor_y, date_time.strftime('%a %I:%M %p'))
+        self.draw_text(anchor_x, anchor_y, date_time.strftime('%a %H:%M'))
     
     def clear_screen(self):
         self.matrix.Clear()
@@ -59,4 +63,5 @@ class MatrixDisplay:
         self.matrix.SetImage(self.image.convert('RGB'))
     
     def setImage(self):
+        print("[MatrixDisplay][Draw!]")
         self.matrix.SetImage(self.image.convert('RGB'))
