@@ -8,7 +8,7 @@ class TrimetDataManager:
         self.keysList = list(self.stops().keys())
     
     def setParsedJson(self, parsedJson):
-        print("[TrimetDataManager][getCurrentStop] updating parsedJson to:")
+        print("[TrimetDataManager][setParsedJson] updating parsedJson to:")
         print(parsedJson)
         self.parsedJson = parsedJson
     
