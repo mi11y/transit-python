@@ -12,7 +12,7 @@ class MatrixDisplay:
         self.init_rgb_matrix()
 
         self.matrix = RGBMatrix(options = self.rgbMatrixOptions) # rows, chain length
-        self.font = ImageFont.load(os.path.dirname(os.path.realpath(__file__))+ '/helvR08.pil')
+        self.font = ImageFont.load(os.path.dirname(os.path.realpath(__file__))+ '/Resources/helvR08.pil')
         self.init_image_draw()
 
     def init_image_draw(self):
