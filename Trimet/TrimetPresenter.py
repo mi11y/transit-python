@@ -30,6 +30,7 @@ class TrimetPresenter:
 
 
     def run(self):
+        self.timeKeeper.reset_start_time()
         self.redraw()
         while (not self.timeKeeper.is_timed_out()):
             if(self.timeKeeper.should_swap()):

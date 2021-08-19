@@ -39,8 +39,8 @@ class MatrixDisplay:
         self.draw.rounded_rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill=fill_color, radius=3)
         self.draw.text((((width-w)/2) + anchor_x, ((height-h)/2) + anchor_y), route_string, fill=text_color, font= self.font)
 
-    def draw_text(self, anchor_x, anchor_y, text):
-        self.draw.text((anchor_x, anchor_y), text, fill="#4d4d4d", font= self.font)
+    def draw_text(self, anchor_x, anchor_y, text, color="#4d4d4d"):
+        self.draw.text((anchor_x, anchor_y), text, fill=color, font= self.font)
 
     def draw_arrival(self, anchor_x, anchor_y, text):
         splits = text.split()
