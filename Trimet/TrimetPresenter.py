@@ -1,7 +1,7 @@
-from TimeKeeper import TimeKeeper
-from DataParser import DataParser
-from TrimetDataManager import TrimetDataManager
-from TrimetStopManager import TrimetStopManager
+from Utils.TimeKeeper import TimeKeeper
+from Utils.DataParser import DataParser
+from Trimet.TrimetDataManager import TrimetDataManager
+from Trimet.TrimetStopManager import TrimetStopManager
 
 class TrimetPresenter:
     def __init__(self, parsedData, matrixDisplay, timeOut):

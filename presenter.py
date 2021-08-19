@@ -1,9 +1,9 @@
 import atexit
 from dateutil import parser
 from rgbmatrix import RGBMatrix, RGBMatrixOptions
-from MatrixDisplay import MatrixDisplay
-from TrimetPresenter import TrimetPresenter
-from DataParser import DataParser
+from Utils.MatrixDisplay import MatrixDisplay
+from Trimet.TrimetPresenter import TrimetPresenter
+from Utils.DataParser import DataParser
 
 class Coordinator:
     def __init__(self):

@@ -1,4 +1,4 @@
-from TrimetArrivalManager import TrimetArrivalManager
+from Trimet.TrimetArrivalManager import TrimetArrivalManager
 
 class TrimetStopManager:
     def __init__(self, parsedJson):
