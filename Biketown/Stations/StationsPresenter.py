@@ -9,7 +9,6 @@ class StationsPresenter:
         self.timeKeeper = TimeKeeper(grandTimeOut=timeOut, swapTimeOut=3)
 
         self.biketownStationDataManager = BiketownStationDataManager(parsedData)
-        self.biketownStationManager = BiketownStationManager(self.biketownStationDataManager.getCurrentStation())
 
     def updateFrom(self, parsedData):
         self.biketownStationDataManager.setData(parsedData)
@@ -23,13 +22,17 @@ class StationsPresenter:
 
     def run(self):
         self.timeKeeper.reset_start_time()
+        if self.biketownStationDataManager.stationCount() == 0:
+            return
+
+        self.biketownStationManager = BiketownStationManager(self.biketownStationDataManager.getCurrentStation())
+
         self.redraw()
         while (not self.timeKeeper.is_timed_out()):
-            if(self.timeKeeper.should_show_next_stop()):
+            if(self.timeKeeper.should_show_next_route()):
                 print("Next Station!")
                 self.timeKeeper.reset_next_route_prev_time()
                 self.timeKeeper.reset_swap_prev_time()
-                self.timeKeeper.reset_next_stop_prev_time()
                 self.paint_black()
                 self.biketownStationDataManager.nextStation()
                 self.biketownStationManager = BiketownStationManager(self.biketownStationDataManager.getCurrentStation())

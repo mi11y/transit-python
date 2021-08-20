@@ -11,6 +11,9 @@ class TrimetDataManager:
         print("[TrimetDataManager][setParsedJson] updating parsedJson to:")
         print(parsedJson)
         self.parsedJson = parsedJson
+
+    def stopCount(self):
+        return len(self.parsedJson["trimet_stops"])
     
     def getCurrentStop(self):
         print("[TrimetDataManager][getCurrentStop]::")

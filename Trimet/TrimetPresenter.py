@@ -8,11 +8,7 @@ class TrimetPresenter:
         self.matrixDisplay  = matrixDisplay
         self.timeKeeper = TimeKeeper(grandTimeOut=timeOut, swapTimeOut=3)
         self.show_estimates = False
-
         self.trimetDataManager = TrimetDataManager(parsedData)
-        self.trimetStopManager = TrimetStopManager(self.trimetDataManager.getCurrentStop())
-        self.currentArrival = self.trimetStopManager.getCurrentArrival()
-        self.nextArrival = self.trimetStopManager.getNextArrival()
 
     def updateFrom(self, parsedData):
         self.trimetDataManager.setData(parsedData)
@@ -31,6 +27,14 @@ class TrimetPresenter:
 
     def run(self):
         self.timeKeeper.reset_start_time()
+
+        if self.trimetDataManager.stopCount() < 1:
+            return
+
+        self.trimetStopManager = TrimetStopManager(self.trimetDataManager.getCurrentStop())
+        self.currentArrival = self.trimetStopManager.getCurrentArrival()
+        self.nextArrival = self.trimetStopManager.getNextArrival()
+
         self.redraw()
         while (not self.timeKeeper.is_timed_out()):
             if(self.timeKeeper.should_swap()):
