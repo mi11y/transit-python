@@ -13,8 +13,8 @@ class Coordinator:
         self.dataParser = DataParser()
         self.dataParser.setLatLon(lat="45.534032", lon="-122.695187")
         self.dataParser.poll()
-        self.trimetPresenter = TrimetPresenter(self.dataParser.getData(), self.matrixDisplay, 15)
-        self.biketownStationsPresenter = StationsPresenter(self.dataParser.getData(), self.matrixDisplay, 15)
+        self.trimetPresenter = TrimetPresenter(self.dataParser.getData(), self.matrixDisplay, 240)
+        self.biketownStationsPresenter = StationsPresenter(self.dataParser.getData(), self.matrixDisplay, 30)
 
     def clear_screen(self):
         self.matrixDisplay.clear_screen()
@@ -23,7 +23,6 @@ class Coordinator:
         while True:
             self.biketownStationsPresenter.updateFrom(self.dataParser.getData())
             self.biketownStationsPresenter.run()
-
             self.trimetPresenter.updateFrom(self.dataParser.getData())
             self.trimetPresenter.run()
             self.dataParser.poll()

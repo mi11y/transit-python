@@ -11,6 +11,9 @@ class BiketownStationDataManager:
         print(parsedJson["share_stations"]["biketown"])
         self.parsedJson = parsedJson["share_stations"]["biketown"]
 
+    def stationCount(self):
+        return len(self.parsedJson)
+
     def getCurrentStation(self):
         return self.parsedJson[self.currentStation]
 
