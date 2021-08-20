@@ -14,6 +14,7 @@ class StationsPresenter:
         self.biketownStationDataManager.setData(parsedData)
 
     def redraw(self):
+        self.paint_black()
         self.draw_biketown_logo()
         self.draw_station_name()
         self.draw_num_bikes_available()
@@ -38,6 +39,7 @@ class StationsPresenter:
                 self.biketownStationManager = BiketownStationManager(self.biketownStationDataManager.getCurrentStation())
                 self.redraw()
         self.timeKeeper.reset_start_time()
+
 
     def paint_black(self):
         self.matrixDisplay.paint_black()
