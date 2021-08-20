@@ -14,6 +14,7 @@ class TrimetPresenter:
         self.trimetDataManager.setData(parsedData)
     
     def redraw(self):
+        self.paint_black()
         self.draw_route_signs()
 
         if(self.show_estimates):
@@ -50,7 +51,7 @@ class TrimetPresenter:
                 self.currentArrival = self.trimetStopManager.getCurrentArrival()
                 self.nextArrival = self.trimetStopManager.getNextArrival()
                 self.redraw()
-            
+
             if(self.timeKeeper.should_show_next_stop()):
                 print("Next Stop!")
                 self.timeKeeper.reset_next_route_prev_time()
@@ -63,7 +64,7 @@ class TrimetPresenter:
                 self.nextArrival = self.trimetStopManager.getNextArrival()
                 self.redraw()
         self.timeKeeper.reset_start_time()
-        
+
     def swap(self):
         print("Swap!")
         self.show_estimates = not self.show_estimates
