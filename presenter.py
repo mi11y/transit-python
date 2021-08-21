@@ -12,7 +12,7 @@ class Coordinator:
     def __init__(self):
         self.matrixDisplay = MatrixDisplay(32, 64)
         self.dataParser = DataParser()
-        self.dataParser.setLatLon(lat="45.524401", lon="-122.681270")
+        self.dataParser.setLatLon(lat="45.518538", lon="-122.678358")
         self.dataParser.poll()
         self.trimetPresenter = TrimetPresenter(self.dataParser.getData(), self.matrixDisplay, 260)
         self.biketownStationsPresenter = StationsPresenter(self.dataParser.getData(), self.matrixDisplay, 30)

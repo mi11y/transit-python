@@ -1,7 +1,7 @@
 import time
 
 class TimeKeeper:
-    def __init__(self, grandTimeOut=256, swapTimeOut=4, nextRouteTimeOut=8, nextStopTimeOut=16):
+    def __init__(self, grandTimeOut=256, swapTimeOut=4, nextRouteTimeOut=8, nextStopTimeOut=32):
         self.swapTimeOut = swapTimeOut
         self.grandTimeOut = grandTimeOut
         self.nextRouteTimeOut = nextRouteTimeOut
