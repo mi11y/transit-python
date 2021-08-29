@@ -23,16 +23,19 @@ class TrimetArrivalManager:
         return self.parsedJson["short_sign"]
     
     def hasRouteColor(self):
-        return "route_color" in self.parsedJson
-    
+        return "route_color" in self.parsedJson["route_info"]
+
     def hasRailShortSign(self):
-        return "rail_short_sign" in self.parsedJson
-    
+        return "rail_short_sign" in self.parsedJson["route_info"]
+
     def getRailShortSign(self):
-        return self.parsedJson["rail_short_sign"]
-    
+        return self.parsedJson["route_info"]["rail_short_sign"]
+
     def getArrivalRouteColor(self):
-        return self.parsedJson["route_color"]
+        return self.parsedJson["route_info"]["route_color"]
     
     def getArrivalDesc(self):
         return self.parsedJson["desc"]
+
+    def isFrequentService(self):
+         return self.parsedJson["route_info"]["frequent_service"]

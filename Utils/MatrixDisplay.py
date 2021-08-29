@@ -50,6 +50,13 @@ class MatrixDisplay:
         self.draw_text(anchor_x, anchor_y, ' '.join(topText))
         self.draw_text(anchor_x + 1, anchor_y + 7, ' '.join(bottomText))
 
+    def draw_route_border(self, anchor_x, anchor_y, width, height, border_color):
+        self.draw.rectangle((anchor_x, anchor_y, anchor_x+width, anchor_y), fill=border_color)
+        self.draw.rectangle((anchor_x, anchor_y+height, anchor_x+width, anchor_y+height), fill=border_color)
+        self.draw.rectangle((anchor_x, anchor_y, anchor_x, anchor_y+height), fill=border_color)
+        self.draw.rectangle((anchor_x+width, anchor_y, anchor_x+width, anchor_y+height), fill=border_color)
+
+
     def draw_estimate(self, anchor_x, anchor_y, date_time_string):
         date_time = parser.parse(date_time_string)
         self.draw_text(anchor_x, anchor_y, date_time.strftime('%a %H:%M'))

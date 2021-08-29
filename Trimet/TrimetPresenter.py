@@ -96,3 +96,7 @@ class TrimetPresenter:
         self.matrixDisplay.draw_route_sign(1, 1, 12, 12, str(self.currentArrival.get_route_number()), topRouteColor, "#000")
         self.matrixDisplay.draw_route_sign(1, 18, 12, 12, str(self.nextArrival.get_route_number()),   bottomRouteColor, "#000")
 
+        if self.currentArrival.isFrequentService():
+            self.matrixDisplay.draw_route_border(0,0,0,0, "#3b990f")
+        if self.nextArrival.isFrequentService():
+            self.matrixDisplay.draw_route_border(0,17,0,0, "#3b990f")
