@@ -39,6 +39,28 @@ class MatrixDisplay:
         self.draw.rounded_rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill=fill_color, radius=3)
         self.draw.text((((width-w)/2) + anchor_x, ((height-h)/2) + anchor_y), route_string, fill=text_color, font= self.font)
 
+    def draw_interstate_highway_sign(self, anchor_x, anchor_y, width, height, route_string):
+        w, h = self.draw.textsize(route_string, font= self.font)
+        h += int(h*0.01)
+        w += int(w*0.09)
+        self.draw.rounded_rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill=(11, 62, 132), radius=3)
+        self.draw.rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + 2], fill=(174, 42, 49))
+        self.draw.text((((width-w)/2) + anchor_x, ((height-h)/2) + anchor_y), route_string, fill="#b5b5b5", font= self.font)
+
+    def draw_oregon_highway_sign(self, anchor_x, anchor_y, width, height, route_string):
+        w, h = self.draw.textsize(route_string, font= self.font)
+        h += int(h*0.01)
+        w += int(w*0.09)
+        self.draw.rounded_rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill="#2e2e2e", radius=3)
+        self.draw.text((((width-w)/2) + anchor_x, ((height-h)/2) + anchor_y), route_string, fill="#b5b5b5", font= self.font)
+
+    def draw_state_route_sign(self, anchor_x, anchor_y, width, height, route_string):
+        w, h = self.draw.textsize(route_string, font= self.font)
+        h += int(h*0.01)
+        w += int(w*0.09)
+        self.draw.rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill="#112b19")
+        self.draw.text((((width-w)/2) + anchor_x, ((height-h)/2) + anchor_y), route_string, fill="#b5b5b5", font= self.font)
+
     def draw_text(self, anchor_x, anchor_y, text, color="#4d4d4d"):
         self.draw.text((anchor_x, anchor_y), text, fill=color, font= self.font)
 
@@ -60,7 +82,7 @@ class MatrixDisplay:
     def draw_estimate(self, anchor_x, anchor_y, date_time_string):
         date_time = parser.parse(date_time_string)
         self.draw_text(anchor_x, anchor_y, date_time.strftime('%a %H:%M'))
-    
+
     def clear_screen(self):
         self.matrix.Clear()
 
@@ -68,7 +90,10 @@ class MatrixDisplay:
         # Clear background
         self.draw.rectangle((0, 0, self.width, self.height), fill=(0, 0, 0))
         self.matrix.SetImage(self.image.convert('RGB'))
-    
+
+    def paint_solid_color_background(self, fill=(0,0,0)):
+        self.draw.rectangle((0, 0, self.width, self.height), fill=fill)
+
     def setImage(self):
         print("[MatrixDisplay][Draw!]")
         self.matrix.SetImage(self.image.convert('RGB'))

@@ -8,6 +8,8 @@ from Utils.DataParser import DataParser
 from Biketown.Stations.StationsPresenter import StationsPresenter
 from Scooters.ScooterPresenter import ScooterPresenter
 
+from Odot.DriveTimePresenter import DriveTimePresenter
+
 class Coordinator:
     def __init__(self):
         self.matrixDisplay = MatrixDisplay(32, 64)
@@ -17,12 +19,15 @@ class Coordinator:
         self.trimetPresenter = TrimetPresenter(self.dataParser.getData(), self.matrixDisplay, 260)
         self.biketownStationsPresenter = StationsPresenter(self.dataParser.getData(), self.matrixDisplay, 30)
         self.scooterPresenter = ScooterPresenter(self.dataParser.getData(), self.matrixDisplay, 10)
+        self.driveTimePresenter = DriveTimePresenter(self.dataParser.getData(), self.matrixDisplay, 120)
 
     def clear_screen(self):
         self.matrixDisplay.clear_screen()
     
     def run(self):
         while True:
+            self.driveTimePresenter.updateFrom(self.dataParser.getData())
+            self.driveTimePresenter.run()
             self.scooterPresenter.updateFrom(self.dataParser.getData())
             self.scooterPresenter.run()
             self.biketownStationsPresenter.updateFrom(self.dataParser.getData())
