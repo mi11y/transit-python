@@ -6,8 +6,9 @@ from Trimet.TrimetStopManager import TrimetStopManager
 class TrimetPresenter:
     def __init__(self, parsedData, matrixDisplay, timeOut):
         self.matrixDisplay  = matrixDisplay
-        self.timeKeeper = TimeKeeper(grandTimeOut=timeOut, swapTimeOut=3)
+        self.timeKeeper = TimeKeeper(grandTimeOut=timeOut, swapTimeOut=6, nextRouteTimeOut=10)
         self.show_estimates = False
+        self.swapExpandedViews = False
         self.trimetDataManager = TrimetDataManager(parsedData)
 
     def updateFrom(self, parsedData):
@@ -42,6 +43,10 @@ class TrimetPresenter:
                 self.swap()
                 self.redraw()
 
+            if(self.timeKeeper.should_swap_expanded_view()):
+                self.switchExpandedViews()
+                self.redraw()
+
             if(self.timeKeeper.should_show_next_route()):
                 print("Next route!")
                 self.timeKeeper.reset_next_route_prev_time()
@@ -73,26 +78,43 @@ class TrimetPresenter:
         self.timeKeeper.reset_swap_prev_time()
         self.paint_black()
 
+    def switchExpandedViews(self):
+        print("Switch Expanded Views!")
+        self.swapExpandedViews = not self.swapExpandedViews
+        print("swap expanded views?")
+        print(self.swapExpandedViews)
+        self.timeKeeper.reset_expanded_view_time()
+
     def paint_black(self):
         self.matrixDisplay.paint_black()
 
     def draw_street(self):
-        self.matrixDisplay.draw_arrival(13, -1, self.trimetStopManager.getStopDescription())
-        self.matrixDisplay.draw_arrival(13, 15, self.trimetStopManager.getStopDescription())
+        if self.swapExpandedViews:
+            self.matrixDisplay.draw_arrival(13, -1, self.trimetStopManager.getStopDescription())
+        else:
+            self.matrixDisplay.draw_arrival(13, -1, self.trimetStopManager.getStopDescription())
 
     def draw_estimates(self):
-        self.matrixDisplay.draw_estimate(13, -1, self.currentArrival.getArrivalScheduled())
-        self.matrixDisplay.draw_estimate(13, 15, self.nextArrival.getArrivalScheduled())
+        if self.swapExpandedViews:
+            self.matrixDisplay.draw_estimate(13, -1, self.currentArrival.getArrivalScheduled())
+        else:
+            self.matrixDisplay.draw_estimate(13, -1, self.nextArrival.getArrivalScheduled())
     
     def draw_direction(self):
-        self.matrixDisplay.draw_text(14, 6, self.trimetStopManager.getStopDir())
-        self.matrixDisplay.draw_text(14, 22, self.trimetStopManager.getStopDir())
+        if self.swapExpandedViews:
+            self.matrixDisplay.draw_text(14, 6, self.trimetStopManager.getStopDir())
+        else:
+            self.matrixDisplay.draw_text(14, 6, self.trimetStopManager.getStopDir())
 
     def draw_route_signs(self):
         topRouteColor    = self.currentArrival.getArrivalRouteColor() if self.currentArrival.hasRouteColor() else "#042340"
         bottomRouteColor = self.nextArrival.getArrivalRouteColor() if self.nextArrival.hasRouteColor() else "#042340"
 
-        self.matrixDisplay.draw_horizontal_divder()
+        #self.matrixDisplay.draw_horizontal_divder()
+        if self.swapExpandedViews:
+            self.matrixDisplay.draw_expanded_divider_upper()
+        else:
+            self.matrixDisplay.draw_expanded_divider_lower()
         self.matrixDisplay.draw_route_sign(1, 1, 12, 12, str(self.currentArrival.get_route_number()), topRouteColor, "#000")
         self.matrixDisplay.draw_route_sign(1, 18, 12, 12, str(self.nextArrival.get_route_number()),   bottomRouteColor, "#000")
 

@@ -1,15 +1,17 @@
 import time
 
 class TimeKeeper:
-    def __init__(self, grandTimeOut=256, swapTimeOut=4, nextRouteTimeOut=8, nextStopTimeOut=32):
+    def __init__(self, grandTimeOut=256, swapTimeOut=4, nextRouteTimeOut=8, nextStopTimeOut=32, expandedViewTimeOut = 4):
         self.swapTimeOut = swapTimeOut
         self.grandTimeOut = grandTimeOut
         self.nextRouteTimeOut = nextRouteTimeOut
         self.nextStopTimeOut = nextStopTimeOut
+        self.expandedViewTimeOut = expandedViewTimeOut
         self.start_time = time.time()
         self.swap_prev_time = time.time()
         self.next_route_prev_time = time.time()
         self.next_stop_prev_time = time.time()
+        self.next_expanded_view_swap = time.time()
 
     def reset_swap_prev_time(self):
         self.swap_prev_time = time.time()
@@ -22,12 +24,16 @@ class TimeKeeper:
     
     def reset_start_time(self):
         self.start_time = time.time()
+
+    def reset_expanded_view_time(self):
+        self.next_expanded_view_swap = time.time()
     
     def reset_all(self):
         self.timeKeeper.reset_swap_prev_time()
         self.timeKeeper.reset_next_route_prev_time()
         self.timeKeeper.reset_next_stop_prev_time()
         self.reset_start_time()
+        self.reset_expanded_view_time()
     
     def is_timed_out(self):
         if(self.grandTimeOut <= 0):
@@ -42,3 +48,6 @@ class TimeKeeper:
 
     def should_swap(self):
         return (time.time() - self.swap_prev_time) > self.swapTimeOut
+
+    def should_swap_expanded_view(self):
+        return (time.time() - self.next_expanded_view_swap) > self.expandedViewTimeOut

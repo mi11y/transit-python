@@ -26,12 +26,12 @@ class Coordinator:
     
     def run(self):
         while True:
-            self.driveTimePresenter.updateFrom(self.dataParser.getData())
-            self.driveTimePresenter.run()
-            self.scooterPresenter.updateFrom(self.dataParser.getData())
-            self.scooterPresenter.run()
-            self.biketownStationsPresenter.updateFrom(self.dataParser.getData())
-            self.biketownStationsPresenter.run()
+            #self.driveTimePresenter.updateFrom(self.dataParser.getData())
+            #self.driveTimePresenter.run()
+            #self.scooterPresenter.updateFrom(self.dataParser.getData())
+            #self.scooterPresenter.run()
+            #self.biketownStationsPresenter.updateFrom(self.dataParser.getData())
+            #self.biketownStationsPresenter.run()
             self.trimetPresenter.updateFrom(self.dataParser.getData())
             self.trimetPresenter.run()
             self.dataParser.poll()

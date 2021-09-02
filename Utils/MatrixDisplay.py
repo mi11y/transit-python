@@ -32,6 +32,14 @@ class MatrixDisplay:
     def draw_vertical_divider(self):
         self.draw.rectangle((16, 0, 16, 32), fill=(64, 64, 64))
 
+    def draw_expanded_divider_lower(self):
+        self.draw.rectangle((0, 16, 16, 16), fill=(64, 64 ,64))
+        self.draw.rectangle((16, 16, 16, 0), fill=(64, 64 ,64))
+
+    def draw_expanded_divider_upper(self):
+        self.draw.rectangle((0, 16, 16, 16), fill=(64, 64 ,64))
+        self.draw.rectangle((16, 16, 16, 32), fill=(64, 64 ,64))
+
     def draw_route_sign(self, anchor_x, anchor_y, width, height, route_string, fill_color, text_color):
         w, h = self.draw.textsize(route_string, font= self.font)
         h += int(h*0.15)
@@ -66,7 +74,9 @@ class MatrixDisplay:
 
     def draw_arrival(self, anchor_x, anchor_y, text):
         splits = text.split()
-        splitAt = math.floor(len(splits)/2)
+        splitAt = math.floor(len(splits)/3)
+        for i in range 0..splitAt:
+            text[]
         topText = splits[0:splitAt]
         bottomText = splits[splitAt:len(splits)]
         self.draw_text(anchor_x, anchor_y, ' '.join(topText))
