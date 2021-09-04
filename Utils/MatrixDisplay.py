@@ -27,10 +27,10 @@ class MatrixDisplay:
         self.rgbMatrixOptions.hardware_mapping = 'adafruit-hat'
 
     def draw_horizontal_divder(self):
-        self.draw.rectangle((0, 16, 64, 16), fill=(64, 64, 64))
+        self.draw.rectangle((0, 16, 64, 16), fill="#b5b5b5")
 
     def draw_vertical_divider(self):
-        self.draw.rectangle((16, 0, 16, 32), fill=(64, 64, 64))
+        self.draw.rectangle((16, 0, 16, 32), fill="#b5b5b5")
 
     def draw_route_sign(self, anchor_x, anchor_y, width, height, route_string, fill_color, text_color):
         w, h = self.draw.textsize(route_string, font= self.font)
@@ -60,6 +60,9 @@ class MatrixDisplay:
         w += int(w*0.09)
         self.draw.rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill="#112b19")
         self.draw.text((((width-w)/2) + anchor_x, ((height-h)/2) + anchor_y), route_string, fill="#b5b5b5", font= self.font)
+
+    def drawRectangle(self, anchor_x, anchor_y, width, height, fill):
+        self.draw.rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill=fill)
 
     def draw_text(self, anchor_x, anchor_y, text, color="#4d4d4d"):
         self.draw.text((anchor_x, anchor_y), text, fill=color, font= self.font)
@@ -95,5 +98,5 @@ class MatrixDisplay:
         self.draw.rectangle((0, 0, self.width, self.height), fill=fill)
 
     def setImage(self):
-        print("[MatrixDisplay][Draw!]")
+        print("Draw!")
         self.matrix.SetImage(self.image.convert('RGB'))
