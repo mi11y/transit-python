@@ -1,4 +1,4 @@
-from Utils.TimeKeeper import TimeKeeper
+from Utils.TimeKeeperImproved import TimeKeeperImproved
 from Utils.DataParser import DataParser
 from Biketown.Stations.BiketownStationDataManager import BiketownStationDataManager
 from Biketown.Stations.BiketownStationManager import BiketownStationManager
@@ -6,8 +6,8 @@ from Biketown.Stations.BiketownStationManager import BiketownStationManager
 class StationsPresenter:
     def __init__(self, parsedData, matrixDisplay, timeOut):
         self.matrixDisplay  = matrixDisplay
-        self.timeKeeper = TimeKeeper(grandTimeOut=timeOut, swapTimeOut=3)
-
+        self.grandTimeOut = TimeKeeperImproved(timeOut = timeOut)
+        self.nextRouteTimeOut = TimeKeeperImproved(timeOut = 8)
         self.biketownStationDataManager = BiketownStationDataManager(parsedData)
 
     def updateFrom(self, parsedData):
@@ -22,24 +22,25 @@ class StationsPresenter:
         self.matrixDisplay.setImage()
 
     def run(self):
-        self.timeKeeper.reset_start_time()
+        self.grandTimeOut.reset()
+        self.nextRouteTimeOut.reset()
+
         if self.biketownStationDataManager.stationCount() == 0:
             return
 
         self.biketownStationManager = BiketownStationManager(self.biketownStationDataManager.getCurrentStation())
-
         self.redraw()
-        while (not self.timeKeeper.is_timed_out()):
-            if(self.timeKeeper.should_show_next_route()):
+        
+        while (not self.grandTimeOut.isTimedOut()):
+            if(self.nextRouteTimeOut.isTimedOut()):
                 print("Next Station!")
-                self.timeKeeper.reset_next_route_prev_time()
-                self.timeKeeper.reset_swap_prev_time()
+                self.nextRouteTimeOut.reset()
                 self.paint_black()
                 self.biketownStationDataManager.nextStation()
                 self.biketownStationManager = BiketownStationManager(self.biketownStationDataManager.getCurrentStation())
                 self.redraw()
-        self.timeKeeper.reset_start_time()
-
+        self.grandTimeOut.reset()
+        self.nextRouteTimeOut.reset()
 
     def paint_black(self):
         self.matrixDisplay.paint_black()
