@@ -1,11 +1,11 @@
-from Utils.TimeKeeper import TimeKeeper
+from Utils.TimeKeeperImproved import TimeKeeperImproved
 from Utils.DataParser import DataParser
 from Scooters.ScooterDataManager import ScooterDataManager
 
 class ScooterPresenter:
     def __init__(self, parsedData, matrixDisplay, timeOut):
         self.matrixDisplay  = matrixDisplay
-        self.timeKeeper = TimeKeeper(grandTimeOut=timeOut, swapTimeOut=3)
+        self.grandTimeOut = TimeKeeperImproved(timeOut = timeOut)
         self.show_estimates = False
         self.scooterDataManager = ScooterDataManager(parsedData)
 
@@ -19,11 +19,11 @@ class ScooterPresenter:
         self.matrixDisplay.setImage()
 
     def run(self):
-        self.timeKeeper.reset_start_time()
+        self.grandTimeOut.reset()
         self.redraw()
-        while (not self.timeKeeper.is_timed_out()):
+        while (not self.grandTimeOut.isTimedOut()):
             continue
-        self.timeKeeper.reset_start_time()
+        self.grandTimeOut.reset()
 
     def paint_black(self):
         self.matrixDisplay.paint_black()

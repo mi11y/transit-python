@@ -1,4 +1,4 @@
-from Utils.TimeKeeper import TimeKeeper
+from Utils.TimeKeeperImproved import TimeKeeperImproved
 from Utils.DataParser import DataParser
 from Odot.DriveTimeDataManager import DriveTimeDataManager
 from Odot.DriveTimeOriginManager import DriveTimeOriginManager
@@ -6,7 +6,10 @@ from Odot.DriveTimeOriginManager import DriveTimeOriginManager
 class DriveTimePresenter:
     def __init__(self, parsedData, matrixDisplay, timeOut):
         self.matrixDisplay = matrixDisplay
-        self.timeKeeper = TimeKeeper(grandTimeOut=timeOut, swapTimeOut=3)
+        self.grandTimeOut = TimeKeeperImproved(timeOut = timeOut)
+        self.swapTimeOut = TimeKeeperImproved(timeOut = 3)
+        self.nextRouteTimeOut = TimeKeeperImproved(timeOut = 8)
+        self.nextStopTimeOut = TimeKeeperImproved(timeOut = 32)
         self.driveTimeDataManager = DriveTimeDataManager(parsedData)
         self.show_estimates = False
 
@@ -25,32 +28,35 @@ class DriveTimePresenter:
         self.matrixDisplay.setImage()
 
     def run(self):
-        self.timeKeeper.reset_start_time()
+        self.grandTimeOut.reset()
+        self.swapTimeOut.reset()
+        self.nextRouteTimeOut.reset()
+        self.nextStopTimeOut.reset()
         if self.driveTimeDataManager.driveTimeCount() < 1:
             return
         self.driveTimeOriginManager = DriveTimeOriginManager(self.driveTimeDataManager.getCurrentDriveTime())
         self.currentDestination = self.driveTimeOriginManager.getCurrentDestination()
         self.nextDestination = self.driveTimeOriginManager.getNextDestination()
         self.redraw()
-        while (not self.timeKeeper.is_timed_out()):
-            if(self.timeKeeper.should_swap()):
+        while (not self.grandTimeOut.isTimedOut()):
+            if(self.swapTimeOut.isTimedOut()):
                 self.swap()
                 self.redraw()
 
-            if(self.timeKeeper.should_show_next_route()):
+            if(self.nextRouteTimeOut.isTimedOut()):
                 print("Next Destination!")
-                self.timeKeeper.reset_next_route_prev_time()
+                self.nextRouteTimeOut.reset()
                 self.paint_black()
                 self.driveTimeOriginManager.updateCurrentDestination()
                 self.currentDestination = self.driveTimeOriginManager.getCurrentDestination()
                 self.nextDestination = self.driveTimeOriginManager.getNextDestination()
                 self.redraw()
 
-            if(self.timeKeeper.should_show_next_stop()):
+            if(self.nextStopTimeOut.isTimedOut()):
                 print("Next Origin!")
-                self.timeKeeper.reset_next_route_prev_time()
-                self.timeKeeper.reset_swap_prev_time()
-                self.timeKeeper.reset_next_stop_prev_time()
+                self.nextRouteTimeOut.reset()
+                self.swapTimeOut.reset()
+                self.nextStopTimeOut.reset()
                 self.paint_black()
                 self.driveTimeDataManager.nextDriveTime()
                 self.driveTimeOriginManager = DriveTimeOriginManager(self.driveTimeDataManager.getCurrentDriveTime())
@@ -58,14 +64,17 @@ class DriveTimePresenter:
                 self.nextDestination = self.driveTimeOriginManager.getNextDestination()
                 self.redraw()
 
-        self.timeKeeper.reset_start_time()
+        self.grandTimeOut.reset()
+        self.swapTimeOut.reset()
+        self.nextRouteTimeOut.reset()
+        self.nextStopTimeOut.reset()
 
     def swap(self):
         print("Swap!")
         self.show_estimates = not self.show_estimates
         print("show estimates? ")
         print(self.show_estimates)
-        self.timeKeeper.reset_swap_prev_time()
+        self.swapTimeOut.reset()
         self.paint_black()
 
     def paint_black(self):

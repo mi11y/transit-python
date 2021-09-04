@@ -1,4 +1,4 @@
-from Utils.TimeKeeper import TimeKeeper
+from Utils.TimeKeeperImproved import TimeKeeperImproved
 from Utils.DataParser import DataParser
 from Trimet.TrimetDataManager import TrimetDataManager
 from Trimet.TrimetStopManager import TrimetStopManager
@@ -6,7 +6,10 @@ from Trimet.TrimetStopManager import TrimetStopManager
 class TrimetPresenter:
     def __init__(self, parsedData, matrixDisplay, timeOut):
         self.matrixDisplay  = matrixDisplay
-        self.timeKeeper = TimeKeeper(grandTimeOut=timeOut, swapTimeOut=3)
+        self.grandTimeOut = TimeKeeperImproved(timeOut = timeOut)
+        self.swapTimeOut = TimeKeeperImproved(timeOut = 3)
+        self.showNextRoute = TimeKeeperImproved(timeOut = 8)
+        self.showNextStop = TimeKeeperImproved(timeOut = 32)
         self.show_estimates = False
         self.trimetDataManager = TrimetDataManager(parsedData)
 
@@ -27,7 +30,10 @@ class TrimetPresenter:
 
 
     def run(self):
-        self.timeKeeper.reset_start_time()
+        self.grandTimeOut.reset()
+        self.swapTimeOut.reset()
+        self.showNextRoute.reset()
+        self.showNextStop.reset()
 
         if self.trimetDataManager.stopCount() < 1:
             return
@@ -37,26 +43,26 @@ class TrimetPresenter:
         self.nextArrival = self.trimetStopManager.getNextArrival()
 
         self.redraw()
-        while (not self.timeKeeper.is_timed_out()):
-            if(self.timeKeeper.should_swap()):
+        while (not self.grandTimeOut.isTimedOut()):
+            if(self.swapTimeOut.isTimedOut()):
                 self.swap()
                 self.redraw()
 
-            if(self.timeKeeper.should_show_next_route()):
+            if(self.showNextRoute.isTimedOut()):
                 print("Next route!")
-                self.timeKeeper.reset_next_route_prev_time()
-                self.timeKeeper.reset_swap_prev_time()
+                self.showNextRoute.reset()
+                self.swapTimeOut.reset()
                 self.paint_black()
                 self.trimetStopManager.updateCurrentArrival()
                 self.currentArrival = self.trimetStopManager.getCurrentArrival()
                 self.nextArrival = self.trimetStopManager.getNextArrival()
                 self.redraw()
 
-            if(self.timeKeeper.should_show_next_stop()):
+            if(self.showNextStop.isTimedOut()):
                 print("Next Stop!")
-                self.timeKeeper.reset_next_route_prev_time()
-                self.timeKeeper.reset_swap_prev_time()
-                self.timeKeeper.reset_next_stop_prev_time()
+                self.showNextRoute.reset()
+                self.swapTimeOut.reset()
+                self.showNextStop.reset()
                 self.paint_black()
                 self.trimetDataManager.nextStop()
                 self.trimetStopManager = TrimetStopManager(self.trimetDataManager.getCurrentStop())
@@ -64,13 +70,14 @@ class TrimetPresenter:
                 self.nextArrival = self.trimetStopManager.getNextArrival()
                 self.redraw()
         self.timeKeeper.reset_start_time()
+        self.grandTimeOut.reset()
 
     def swap(self):
         print("Swap!")
         self.show_estimates = not self.show_estimates
         print("show estimates? ")
         print(self.show_estimates)
-        self.timeKeeper.reset_swap_prev_time()
+        self.swapTimeOut.reset()
         self.paint_black()
 
     def paint_black(self):
