@@ -46,10 +46,11 @@ class StationsPresenter:
         self.matrixDisplay.paint_black()
 
     def draw_biketown_logo(self):
-        self.matrixDisplay.draw_text(1, 18, "Biketown", "#b33f25")
+        self.matrixDisplay.loadImage(path='Utils/Resources/Biketown_logo.png')
+        self.matrixDisplay.pasteOnto()
 
     def draw_num_bikes_available(self):
         self.matrixDisplay.draw_text(52, 18, str(self.biketownStationManager.getNumberOfBikes()))
 
     def draw_station_name(self):
-        self.matrixDisplay.draw_arrival(1, -1, str(self.biketownStationManager.getStationName()))
+        self.matrixDisplay.draw_arrival(1, 12, str(self.biketownStationManager.getStationName()))
