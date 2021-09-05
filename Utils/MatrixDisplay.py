@@ -25,6 +25,12 @@ class MatrixDisplay:
         self.rgbMatrixOptions.chain_length = 1
         self.rgbMatrixOptions.parallel = 1
         self.rgbMatrixOptions.hardware_mapping = 'adafruit-hat'
+    
+    def loadImage(self, path = 'Utils/Resources/Biketown_logo.png'):
+        self.im1 = Image.open(path)
+    
+    def pasteOnto(self, coords=(0,0)):
+        self.image.paste(self.im1, coords)
 
     def draw_horizontal_divder(self):
         self.draw.rectangle((0, 16, 64, 16), fill="#b5b5b5")
@@ -64,7 +70,7 @@ class MatrixDisplay:
     def drawRectangle(self, anchor_x, anchor_y, width, height, fill):
         self.draw.rectangle([anchor_x, anchor_y, anchor_x + width, anchor_y + height], fill=fill)
 
-    def draw_text(self, anchor_x, anchor_y, text, color="#4d4d4d"):
+    def draw_text(self, anchor_x, anchor_y, text, color="#b5b5b5"):
         self.draw.text((anchor_x, anchor_y), text, fill=color, font= self.font)
 
     def draw_arrival(self, anchor_x, anchor_y, text):

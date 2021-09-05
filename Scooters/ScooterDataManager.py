@@ -24,3 +24,8 @@ class ScooterDataManager:
         if len(self.parsedJson["bike_shares"]) < 1:
             return 0
         return len(self.parsedJson["bike_shares"]["Biketown"])
+
+    def getBoltScooterCount(self):
+        if len(self.parsedJson["bike_shares"]) < 1:
+            return 0
+        return len(self.parsedJson["bike_shares"]["Bolt"])
