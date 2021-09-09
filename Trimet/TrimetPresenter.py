@@ -129,10 +129,10 @@ class TrimetPresenter:
         bottomRouteColor = self.nextArrival.getArrivalRouteColor() if self.nextArrival.hasRouteColor() else "#0c5ca7"
         topRouteColor = Color(topRouteColor)
         bottomRouteColor = Color(bottomRouteColor)
-        if topRouteColor.luminance > 0.40:
-            topRouteColor.luminance = 0.40
-        if bottomRouteColor.luminance > 0.40:
-            bottomRouteColor.luminance = 0.40
+        # if topRouteColor.luminance > 0.40:
+        #     topRouteColor.luminance = 0.40
+        # if bottomRouteColor.luminance > 0.40:
+        #     bottomRouteColor.luminance = 0.40
         self.matrixDisplay.drawRectangle(0, 0, 14, 32, "#000")
         self.matrixDisplay.draw_horizontal_divder()
         self.matrixDisplay.draw_route_sign(1, 1, 12, 12, str(self.currentArrival.get_route_number()), topRouteColor.hex, "#000")

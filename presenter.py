@@ -13,6 +13,9 @@ from Scooters.BoltPresenter import BoltPresenter
 from Scooters.BiketownPresenter import BiketownPresenter
 
 from IntroScreens.Scooters.Nearby import Nearby
+from IntroScreens.Bikeshare import Bikeshare
+from IntroScreens.Trimet import Trimet
+from IntroScreens.Tripcheck import Tripcheck
 
 from Odot.DriveTimePresenter import DriveTimePresenter
 
@@ -23,7 +26,10 @@ class Coordinator:
         self.dataParser.setLatLon(lat="45.518538", lon="-122.678358")
         self.dataParser.poll()
         self.nearbyScootersIntro = Nearby(self.matrixDisplay, 10)
-        self.trimetPresenter = TrimetPresenter(self.dataParser.getData(), self.matrixDisplay, 260)
+        self.nearbyBikeshareIntro = Bikeshare(self.matrixDisplay, 10)
+        self.trimetIntro = Trimet(self.matrixDisplay, 10)
+        self.driveTimeIntro = Tripcheck(self.matrixDisplay, 10)
+        self.trimetPresenter = TrimetPresenter(self.dataParser.getData(), self.matrixDisplay, 260, False)
         self.biketownStationsPresenter = StationsPresenter(self.dataParser.getData(), self.matrixDisplay, 30)
         self.spinPresenter = SpinPresenter(self.dataParser.getData(), self.matrixDisplay, 5)
         self.birdPresenter = BirdPresenter(self.dataParser.getData(), self.matrixDisplay, 5)
@@ -48,10 +54,13 @@ class Coordinator:
             self.boltPresenter.run()
             self.biketownPresenter.updateFrom(self.dataParser.getData())
             self.biketownPresenter.run()
+            self.nearbyBikeshareIntro.run()
             self.biketownStationsPresenter.updateFrom(self.dataParser.getData())
             self.biketownStationsPresenter.run()
+            self.trimetIntro.run()
             self.trimetPresenter.updateFrom(self.dataParser.getData())
             self.trimetPresenter.run()
+            self.driveTimeIntro.run()
             self.driveTimePresenter.updateFrom(self.dataParser.getData())
             self.driveTimePresenter.run()
             self.dataParser.poll()
