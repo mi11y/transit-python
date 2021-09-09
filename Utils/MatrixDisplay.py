@@ -3,6 +3,8 @@ from dateutil import parser
 from PIL import Image, ImageDraw, ImageFont
 import os
 import math
+import time
+
 
 class MatrixDisplay:
     def __init__(self, height, width):
@@ -12,6 +14,7 @@ class MatrixDisplay:
         self.init_rgb_matrix()
 
         self.matrix = RGBMatrix(options = self.rgbMatrixOptions) # rows, chain length
+        self.double_buffer = self.matrix.CreateFrameCanvas()
         self.font = ImageFont.load(os.path.dirname(os.path.realpath(__file__))+ '/Resources/helvR08.pil')
         self.init_image_draw()
 
@@ -98,7 +101,7 @@ class MatrixDisplay:
     def paint_black(self):
         # Clear background
         self.draw.rectangle((0, 0, self.width, self.height), fill=(0, 0, 0))
-        self.matrix.SetImage(self.image.convert('RGB'))
+        # self.matrix.SetImage(self.image.convert('RGB'))
 
     def paint_solid_color_background(self, fill=(0,0,0)):
         self.draw.rectangle((0, 0, self.width, self.height), fill=fill)
@@ -106,3 +109,12 @@ class MatrixDisplay:
     def setImage(self):
         print("Draw!")
         self.matrix.SetImage(self.image.convert('RGB'))
+
+    def setImageDoubleBuffer(self):
+        self.double_buffer.SetImage(self.image.convert('RGB'))
+
+
+    def doubleBufferDraw(self):
+        print("Double buffer draw!")
+        self.double_buffer = self.matrix.SwapOnVSync(self.double_buffer)
+        time.sleep(0.01)

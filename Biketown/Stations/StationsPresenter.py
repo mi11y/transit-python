@@ -50,7 +50,7 @@ class StationsPresenter:
         self.matrixDisplay.pasteOnto()
 
     def draw_num_bikes_available(self):
-        self.matrixDisplay.draw_text(52, 18, str(self.biketownStationManager.getNumberOfBikes()))
+        self.matrixDisplay.draw_text(52, 19, str(self.biketownStationManager.getNumberOfBikes()))
 
     def draw_station_name(self):
         self.matrixDisplay.draw_arrival(1, 12, str(self.biketownStationManager.getStationName()))

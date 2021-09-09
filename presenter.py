@@ -29,7 +29,7 @@ class Coordinator:
         self.nearbyBikeshareIntro = Bikeshare(self.matrixDisplay, 10)
         self.trimetIntro = Trimet(self.matrixDisplay, 10)
         self.driveTimeIntro = Tripcheck(self.matrixDisplay, 10)
-        self.trimetPresenter = TrimetPresenter(self.dataParser.getData(), self.matrixDisplay, 260, False)
+        self.trimetPresenter = TrimetPresenter(self.dataParser.getData(), self.matrixDisplay, 260)
         self.biketownStationsPresenter = StationsPresenter(self.dataParser.getData(), self.matrixDisplay, 30)
         self.spinPresenter = SpinPresenter(self.dataParser.getData(), self.matrixDisplay, 5)
         self.birdPresenter = BirdPresenter(self.dataParser.getData(), self.matrixDisplay, 5)
