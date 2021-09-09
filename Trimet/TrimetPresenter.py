@@ -7,40 +7,44 @@ from Trimet.TimingDefaults import TimingDefaults
 from colour import Color
 
 class TrimetPresenter:
-    def __init__(self, parsedData, matrixDisplay, timeOut, scrolling = True):
+    def __init__(self, parsedData, matrixDisplay, timeOut):
         self.matrixDisplay  = matrixDisplay
-        self.scrollingEnabled = scrolling
-        if self.scrollingEnabled:
-            self.timingDefinitions = ScrollingTimingDefaults()
-        else:
-            self.timingDefinitions = TimingDefaults()
+        self.timingDefinitions = ScrollingTimingDefaults()
         self.grandTimeOut = TimeKeeperImproved(timeOut = timeOut)
         self.swapTimeOut = TimeKeeperImproved(timeOut = self.timingDefinitions.swapTimeOut)
         self.showNextRoute = TimeKeeperImproved(timeOut = self.timingDefinitions.showNextRoute)
         self.showNextStop = TimeKeeperImproved(timeOut = self.timingDefinitions.showNextStop)
         self.scrollLeftTimeOut = TimeKeeperImproved(timeOut = self.timingDefinitions.scrollLeftTimeOut)
         self.show_estimates = False
-
-        if self.scrollingEnabled:
-            self.drawAtX = 60
-        else:
-            self.drawAtX = 14
+        self.drawAtX = 60
         self.trimetDataManager = TrimetDataManager(parsedData)
 
     def updateFrom(self, parsedData):
         self.trimetDataManager.setData(parsedData)
     
-    def redraw(self):
-        self.paint_black()
+    def scrollLeft(self):
+        self.drawAtX = self.drawAtX - 1
+        if self.drawAtX < -64:
+            self.drawAtX = 64
 
+    def redraw(self):
+        self.drawPresentation()
+        self.matrixDisplay.setImageDoubleBuffer()
+        self.scrollLeft()
+
+        self.paint_black()
+        self.drawPresentation()
+        self.matrixDisplay.setImageDoubleBuffer()
+
+        self.matrixDisplay.doubleBufferDraw()
+
+    def drawPresentation(self):
         if(self.show_estimates):
             self.draw_estimates()
             self.draw_direction()
         else:
             self.draw_street()
         self.draw_route_signs()
-        self.matrixDisplay.setImage()
-
 
     def run(self):
         self.grandTimeOut.reset()
@@ -60,7 +64,6 @@ class TrimetPresenter:
         while (not self.grandTimeOut.isTimedOut()):
             if(self.swapTimeOut.isTimedOut()):
                 self.swap()
-                self.redraw()
 
             if(self.showNextRoute.isTimedOut()):
                 print("Next route!")
@@ -71,7 +74,6 @@ class TrimetPresenter:
                 self.trimetStopManager.updateCurrentArrival()
                 self.currentArrival = self.trimetStopManager.getCurrentArrival()
                 self.nextArrival = self.trimetStopManager.getNextArrival()
-                self.redraw()
 
             if(self.showNextStop.isTimedOut()):
                 print("Next Stop!")
@@ -83,12 +85,8 @@ class TrimetPresenter:
                 self.trimetStopManager = TrimetStopManager(self.trimetDataManager.getCurrentStop())
                 self.currentArrival = self.trimetStopManager.getCurrentArrival()
                 self.nextArrival = self.trimetStopManager.getNextArrival()
-                self.redraw()
             
-            if(self.scrollingEnabled and self.scrollLeftTimeOut.isTimedOut()):
-                self.scrollLeft()
-                self.scrollLeftTimeOut.reset()
-                self.redraw()
+            self.redraw()
             
         self.grandTimeOut.reset()
         self.swapTimeOut.reset()
@@ -103,11 +101,6 @@ class TrimetPresenter:
         print(self.show_estimates)
         self.swapTimeOut.reset()
         self.paint_black()
-    
-    def scrollLeft(self):
-        self.drawAtX = self.drawAtX - 1
-        if self.drawAtX < -64:
-            self.drawAtX = 64
 
     def paint_black(self):
         self.matrixDisplay.paint_black()
