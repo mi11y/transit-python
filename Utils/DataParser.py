@@ -3,7 +3,7 @@ import requests
 
 class DataParser:
     def __init__(self):
-        self.apiUrl = "http://192.168.1.103:5000/locations/show"
+        self.apiUrl = "http://192.168.1.103:3000/locations/show"
         self.lat = "45.518538"
         self.lon = "-122.678358"
         self.parsedJson = {}

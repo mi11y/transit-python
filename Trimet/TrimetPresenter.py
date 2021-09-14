@@ -14,7 +14,6 @@ class TrimetPresenter:
         self.swapTimeOut = TimeKeeperImproved(timeOut = self.timingDefinitions.swapTimeOut)
         self.showNextRoute = TimeKeeperImproved(timeOut = self.timingDefinitions.showNextRoute)
         self.showNextStop = TimeKeeperImproved(timeOut = self.timingDefinitions.showNextStop)
-        self.scrollLeftTimeOut = TimeKeeperImproved(timeOut = self.timingDefinitions.scrollLeftTimeOut)
         self.show_estimates = False
         self.drawAtX = 60
         self.trimetDataManager = TrimetDataManager(parsedData)
@@ -51,7 +50,6 @@ class TrimetPresenter:
         self.swapTimeOut.reset()
         self.showNextRoute.reset()
         self.showNextStop.reset()
-        self.scrollLeftTimeOut.reset()
 
         if self.trimetDataManager.stopCount() < 1:
             return
@@ -92,7 +90,6 @@ class TrimetPresenter:
         self.swapTimeOut.reset()
         self.showNextRoute.reset()
         self.showNextStop.reset()
-        self.scrollLeftTimeOut.reset()
 
     def swap(self):
         print("Swap!")

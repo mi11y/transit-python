@@ -23,7 +23,7 @@ class Coordinator:
     def __init__(self):
         self.matrixDisplay = MatrixDisplay(32, 64)
         self.dataParser = DataParser()
-        self.dataParser.setLatLon(lat="45.518538", lon="-122.678358")
+        self.dataParser.setLatLon(lat="45.502682", lon="-122.672297")
         self.dataParser.poll()
         self.nearbyScootersIntro = Nearby(self.matrixDisplay, 10)
         self.nearbyBikeshareIntro = Bikeshare(self.matrixDisplay, 10)
@@ -43,6 +43,9 @@ class Coordinator:
     
     def run(self):
         while True:
+            self.trimetIntro.run()
+            self.trimetPresenter.updateFrom(self.dataParser.getData())
+            self.trimetPresenter.run()
             self.nearbyScootersIntro.run()
             self.spinPresenter.updateFrom(self.dataParser.getData())
             self.spinPresenter.run()
@@ -57,9 +60,6 @@ class Coordinator:
             self.nearbyBikeshareIntro.run()
             self.biketownStationsPresenter.updateFrom(self.dataParser.getData())
             self.biketownStationsPresenter.run()
-            self.trimetIntro.run()
-            self.trimetPresenter.updateFrom(self.dataParser.getData())
-            self.trimetPresenter.run()
             self.driveTimeIntro.run()
             self.driveTimePresenter.updateFrom(self.dataParser.getData())
             self.driveTimePresenter.run()
